@@ -30,7 +30,7 @@ const Login = ({ navigation: { navigate } }) => (
             <Text>
                 Don't have an account?
                 <Btn onPress={() => navigate('Join')}>
-                    <BtnTxt>Join</BtnTxt>
+                    <BtnTxt>Join &rarr;</BtnTxt>
                 </Btn>
             </Text>
         </Wrapper>
