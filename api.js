@@ -8,5 +8,5 @@ export const history = ({ queryKey }) =>
     fetch(
         `${BASE_URL}/tickers/${queryKey[1]}/historical?start=${
             new Date().toISOString().split('T')[0]
-        }&30m`
-    );
+        }&interval=1h`
+    ).then((response) => response.json());

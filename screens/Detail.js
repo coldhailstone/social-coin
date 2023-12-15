@@ -1,10 +1,14 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import { Icon } from '../components/Coin';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import styled from 'styled-components';
+import { VictoryChart, VictoryLine, VictoryScatter } from 'victory-native';
 import { history, info } from '../api';
+import { BLACK_COLOR } from '../colors';
+import { Icon } from '../components/Coin';
 
-const Container = styled.ScrollView``;
+const Container = styled.ScrollView`
+    background-color: ${BLACK_COLOR};
+`;
 
 const Detail = ({
     navigation,
@@ -26,8 +30,33 @@ const Detail = ({
 
     const { isLoading: infoLoading, data: infoData } = useQuery(['coinInfo', id], info);
     const { isLoading: historyLoading, data: historyData } = useQuery(['coinHistory', id], history);
+    const [victoryData, setVictoryData] = useState([]);
+    useEffect(() => {
+        if (historyData) {
+            setVictoryData(
+                historyData.map((price) => ({
+                    x: new Date(price.timestamp).getTime(),
+                    y: price.price,
+                }))
+            );
+        }
+    }, [historyData]);
 
-    return <Container></Container>;
+    return (
+        <Container>
+            {victoryData ? (
+                <VictoryChart height={360}>
+                    <VictoryLine
+                        animate
+                        interpolation='monotoneX'
+                        data={victoryData}
+                        style={{ data: { stroke: '#1abc9c' } }}
+                    />
+                    <VictoryScatter data={victoryData} style={{ data: { fill: '#1abc9c' } }} />
+                </VictoryChart>
+            ) : null}
+        </Container>
+    );
 };
 
 export default Detail;
