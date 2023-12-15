@@ -49,7 +49,9 @@ const Home = () => {
                 ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
                 data={cleanData}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => <Coin index={index} symbol={item.symbol} />}
+                renderItem={({ item, index }) => (
+                    <Coin index={index} id={item.id} symbol={item.symbol} />
+                )}
             />
         </Container>
     );
